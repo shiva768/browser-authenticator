@@ -21,6 +21,7 @@ npm install
 npm test          # TOTP(RFC 6238)・base32・otpauth・暗号化のテスト
 npm run build     # 型チェック + dist/ 生成
 npm run dev       # 開発サーバ(HMR)
+node scripts/make-icons.mjs   # assets/icon.svg から src/assets/icons/ の PNG を再生成
 ```
 
 ## Chrome に読み込む
