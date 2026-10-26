@@ -73,19 +73,21 @@ describe("otpauth", () => {
 });
 
 describe("グループと並び替え", () => {
-  const mk = (id: string, group?: string, pinned = false): Entry => ({
+  const mk = (id: string, group?: string): Entry => ({
     id, issuer: id, account: "", secret: "JBSWY3DP", type: "totp", counter: 0,
-    period: 30, digits: 6, algorithm: "SHA1", pinned, group,
+    period: 30, digits: 6, algorithm: "SHA1", group,
   });
   const ids = (es: Entry[]) => es.map((e) => e.id).join(",");
   const base = [mk("a"), mk("b", "work"), mk("c", "work"), mk("d", "home"), mk("e")];
 
-  it("未分類→グループ初出順に並び、各セクション内はピン留めが先頭", () => {
+  it("未分類→グループ初出順に並び、各セクション内は配列の順", () => {
     expect(buildSections(base).map((s) => `${s.name}:${ids(s.entries)}`)).toEqual([
       ":a,e", "work:b,c", "home:d",
     ]);
-    const pinned = [mk("x", "g"), mk("y", "g", true)];
-    expect(ids(buildSections(pinned)[1].entries)).toBe("y,x");
+  });
+  it("移動した並びがそのまま保存順になる(再度 buildSections しても変わらない)", () => {
+    const moved = moveEntry(base, "c", { group: "work", beforeId: "b" });
+    expect(ids(buildSections(moved).flatMap((s) => s.entries))).toBe(ids(moved));
   });
   it("group 未設定の既存データは未分類になる", () => {
     expect(buildSections([mk("a")])[0].entries).toHaveLength(1);

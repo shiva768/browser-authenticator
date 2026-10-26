@@ -130,7 +130,7 @@ export function newId(): string {
 }
 
 export function toEntry(n: NewEntry): Entry {
-  return { ...n, id: newId(), pinned: false };
+  return { ...n, id: newId() };
 }
 
 /** 同じ issuer/account/secret は重複として除外して末尾に追加する */

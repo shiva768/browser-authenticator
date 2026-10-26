@@ -11,9 +11,8 @@ export interface Entry {
   period: number;
   digits: number;
   algorithm: Algorithm;
-  pinned: boolean;
   /** グループ名。未設定・空文字は「未分類」。既存データとの互換のため省略可 */
   group?: string;
 }
 
-export type NewEntry = Omit<Entry, "id" | "pinned">;
+export type NewEntry = Omit<Entry, "id">;

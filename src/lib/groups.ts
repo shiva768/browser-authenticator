@@ -1,7 +1,7 @@
 import type { Entry } from "./types";
 
 // 表示順 = 保存順。entries 配列を「未分類 → グループ(初出順)」の順に並べ、
-// 各セクション内ではピン留めを先頭にする。並び替え後はこの順で配列を保存し直す。
+// 各セクション内は配列内の順序のまま。並び替え後はこの順で配列を保存し直す。
 export interface Section {
   /** 空文字 = 未分類 */
   name: string;
@@ -18,10 +18,7 @@ export function buildSections(entries: Entry[]): Section[] {
     if (list) list.push(e);
     else map.set(g, [e]);
   }
-  return [...map].map(([name, list]) => ({
-    name,
-    entries: [...list.filter((e) => e.pinned), ...list.filter((e) => !e.pinned)],
-  }));
+  return [...map].map(([name, entries]) => ({ name, entries }));
 }
 
 const flatten = (sections: Section[]): Entry[] => sections.flatMap((s) => s.entries);
